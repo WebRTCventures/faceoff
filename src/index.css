@@ -11,3 +11,105 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.home-container {
+  padding-top: 1px;
+  padding-right: 96px;
+  padding-left: 96px;
+
+  height: 100%;
+  background: linear-gradient(0deg, #4837cd51 0%, #F5F5FA 100%);
+  justify-items: center;
+  padding-bottom: 100px
+}
+
+.home-content {
+  width: 986px;
+  border-radius: 39.6px;
+  border-width: 1px;
+  background: #FFFFFF;
+  border-top: 1px solid #221B2029;
+  padding-bottom: 20px;
+}
+
+video {
+  width: 639;
+  height: 480;
+  border-radius: 8px;
+}
+
+.lk-video-container {
+  background-color: transparent !important;
+}
+
+.lk-device-menu {
+  background-color: white !important;
+  border: 1px solid black !important;
+}
+
+.lk-username-container {
+  align-items: center !important;
+}
+
+.lk-join-button {
+  width: 180px;
+  height: 52px;
+  font-size: 20px;
+  border-radius: 8px !important;
+  background-color: #4937CD !important;
+  opacity: 1 !important;
+  color: white !important;
+
+  &:disabled {
+    opacity: 0.5 !important;
+  }
+}
+
+.lk-form-control {
+  width: 345px;
+  height: 44px;
+  top: 584px;
+  left: 321px;
+  border-radius: 8px;
+  border-width: 1px;
+  border: 1px solid #4937CD !important;
+  color:#4937CD;
+  font-size: 14px !important;
+  padding-left: 5%
+}
+
+.lk-form-control::placeholder {
+  color:#4937CD;
+  font-size: 14px !important;
+}
+
+svg {
+  color: #4937CD
+}
+
+.top-bar {
+  padding-left: 5%;
+  padding-right: 5%;
+  background: #F5F5FA;
+  height: 6vh;
+  align-content: center;
+
+  .title {
+    font-family: Dela Gothic One;
+    font-weight: 400;
+    font-size: 24px;
+    color: #4937CD;
+  }
+}
+
+.copy-link {
+  width: 252px;
+  height: 52px;
+  padding-top: 14px;
+  padding-right: 24px;
+  padding-bottom: 14px;
+  padding-left: 24px;
+  border-radius: 8px;
+  border: none;
+  background: #4937CD !important;
+}

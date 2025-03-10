@@ -20,12 +20,16 @@ export default function Home() {
       .then(async (res) => {
         return res.json()
       })
-      .then(({token, roomId}) => {
-        setToken(token)
-        setRoomId(roomId)
-        console.log('Token:', token);
-        console.log('roomId:', roomId);
-      });
+      .then(({token, roomId, error}) => {
+        if(error) {
+          alert(error)
+        } else {
+          setToken(token)
+          setRoomId(roomId)
+          console.log('Token:', token);
+          console.log('roomId:', roomId);
+        }
+      })
   }
 
   function handleSubmit(userOptions) {

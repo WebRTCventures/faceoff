@@ -11,6 +11,8 @@ export default function GameRoom({token, roomId, userOptions}) {
     gamesPlayed: 0,
     currentWinner
   })
+  const [rounds, setRounds] = useState([[]]);
+
   const participants = useParticipants();
   // Send messages to all participants via the 'chat' topic.
   const { message: latestMessage, send } = useDataChannel("chat", (msg) =>{
@@ -45,7 +47,7 @@ export default function GameRoom({token, roomId, userOptions}) {
         </div>
       </div>
 
-      <Sidebar currentWinner={currentWinner} />
+      <Sidebar currentWinner={currentWinner} gameData={gameData} rounds={rounds} />
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { PreJoin } from "@livekit/components-react";
-import App from '../App';
+import { LiveKitRoom, PreJoin } from "@livekit/components-react";
 import { useSearchParams } from 'react-router';
+import GameRoom from './GameRoom';
 
 export default function Home() {
   const [token, setToken] = useState('');
@@ -26,22 +26,30 @@ export default function Home() {
         } else {
           setToken(token)
           setRoomId(roomId)
-          console.log('Token:', token);
-          console.log('roomId:', roomId);
         }
       })
   }
 
   function handleSubmit(userOptions) {
-    console.log('User options:', userOptions);
     setUserOptions(userOptions);
     fetchToken(userOptions.username);
   }
 
+  const serverUrl = 'wss://faceoff-kglh1sok.livekit.cloud';
+
   return (
     <>
       { token ? (
-        <App token={token} roomId={roomId} userOptions={userOptions} />
+        <LiveKitRoom
+          audio={userOptions.audioEnabled}
+          video={userOptions.videoEnabled}
+          token={token}
+          serverUrl={serverUrl}
+          data-lk-theme="default"
+          style={{display: 'flex', width: '100%', backgroundColor: '#F5F5FA'}}
+        >
+          <GameRoom token={token} roomId={roomId} userOptions={userOptions} />
+        </LiveKitRoom>
       ) : (
         <div className="home-container">
           <div>

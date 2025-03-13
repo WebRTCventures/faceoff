@@ -52,14 +52,20 @@ app.get('/rooms',  async (req, res) => {
 app.get('/getToken', async (req, res) => {
   const userName = req.query.userName;
   const room = req.query.roomId;
-  const { token, roomId, error } = await handleToken(userName, room)
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Content-Type', 'application/json');
 
-  if(error) {
-    res.status(500).json({error});
-  } else {
-    res.json({token, roomId});
+  try {
+    const { token, roomId, error } = await handleToken(userName, room)
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Content-Type', 'application/json');
+
+    if(error) {
+      res.status(500).json({error});
+    } else {
+      res.json({token, roomId});
+    }
+  } catch(e) {
+    console.error(e);
+    res.status(500).json({error: e});
   }
 });
 

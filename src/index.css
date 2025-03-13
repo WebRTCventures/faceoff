@@ -94,12 +94,14 @@ svg {
   height: 6vh;
   align-content: center;
 
-  .title {
-    font-family: Dela Gothic One;
-    font-weight: 400;
-    font-size: 24px;
-    color: #4937CD;
-  }
+  border-bottom: 1px solid #221B2029
+}
+
+.title {
+  font-family: Dela Gothic One;
+  font-weight: 400;
+  font-size: 24px;
+  color: #4937CD;
 }
 
 .copy-link {
@@ -112,4 +114,78 @@ svg {
   border-radius: 8px;
   border: none;
   background: #4937CD !important;
+  font-family: DM Mono;
+}
+
+#start-game-button {
+  width: 192;
+  height: 52;
+  padding-top: 14px;
+  padding-right: 24px;
+  padding-bottom: 14px;
+  padding-left: 24px;
+  border-radius: 8px;
+
+  font-family: DM Mono;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+
+  background: #4937CD;
+  color: #FFFAFD;
+  border: none;
+  cursor: pointer;
+
+  &:disabled {
+    background: #B1B1B1;
+    cursor: not-allowed;
+  }
+}
+
+.sidebar {
+  width: 20% !important;
+  gap: 30px;
+  padding-top: 24px;
+  padding-right: 20px;
+  padding-bottom: 32px;
+  padding-left: 20px;
+
+  background: #4937CD33;
+}
+
+.number-card {
+  width: 180px;
+  height: 70px;
+  gap: 16px;
+  border-radius: 16px;
+  padding: 24px;
+  border-width: 1.5px;
+
+  background: #4937CD;
+  border-top: 1.5px solid #FFFFFF;
+
+  margin-top: 16px;
+
+  .title {
+    width: 185;
+    height: 24;
+    font-family: Outfit;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    color: #E4DAD7;
+  }
+
+  .detail {
+    font-family: Outfit;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 40px;
+    letter-spacing: 0%;
+    color: #E4DAD7;
+
+    margin-top: 1vh;
+  }
 }

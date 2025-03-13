@@ -31,16 +31,13 @@ export default function GameRoom({token, roomId, userOptions}) {
   return (
     <>
       <div style={{width: '100%'}}>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '2vh', marginBottom: '2vh'}}>
-          <button
-            id='start-game-button'
-            type="button"
-            disabled={participants.length <= 1}
-            onClick={startGame}
-          >
-            Start a game
-          </button>
-        </div>
+        { gameState === 'waiting' && (
+          <div style={{display: 'flex', justifyContent: 'center', marginTop: '2vh', marginBottom: '2vh'}}>
+            <button id='start-game-button' type="button" disabled={participants.length <= 1} onClick={startGame}>
+              Start a game
+            </button>
+          </div>
+        ) }
 
         <div style={{ padding: '0 2rem 0 1rem' }}>
           { gameState === 'playing' && <EmojiRoom username={userOptions.username} /> }

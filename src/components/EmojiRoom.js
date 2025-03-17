@@ -1,37 +1,30 @@
 import { ControlBar, ParticipantTile, useTracks } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import { useEffect, useState } from "react";
+import * as faceapi from '@vladmandic/face-api';
 
-export default function EmojiRoom({username}) {
+export default function EmojiRoom({username, emoji}) {
   const trackRefs = useTracks([Track.Source.Camera]);
   const myCamTrackRef = trackRefs.find((trackRef) => trackRef.participant.identity === username);
   const emojis = [
-    '\u{1F600}', '\u{1F617}', '\u{1F642}', '\u{1F61C}', '\u{1F61B}', '\u{1F92D}', '\u{1F92B}',
-    '\u{1F610}', '\u{1F928}', '\u{1F914}', '\u{1F644}', '\u{1F641}', '\u{1F62E}', '\u{1F631}',
-    '\u{1F621}', '\u{1F609}'
+    //   😀           😐            🙁           😮           😰           😡           🤢
+    '\u{1F600}', '\u{1F610}',  '\u{1F641}', '\u{1F62E}', '\u{1F630}', '\u{1F621}', '\u{1F922}'
   ]
-  const [emoji, setEmoji] = useState('');
   const [seconds, setSeconds] = useState(10);
 
   useEffect(() => {
-    if (seconds > 0) {
-      setTimeout(() => setSeconds(seconds - 1), 1000);
-    } else {
-      // do bot shenanigans
-      // return to waiting mode
+    if(emoji) {
+      if (seconds > 0) {
+        setTimeout(() => setSeconds(seconds - 1), 1000);
+      } else {
+        // do bot shenanigans
+        // return to waiting mode
+      }
     }
   });
 
-  const chooseEmoji = () => {
-    return emojis[Math.floor(Math.random() * emojis.length)];
-  }
-
   // TODO record the video while on timer
   // TODO integrate with Bot Service with tensor flow to get the scores
-
-  useEffect(() => {
-    setEmoji(chooseEmoji());
-  }, [])
 
   return (
     <div>

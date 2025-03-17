@@ -69,6 +69,28 @@ app.get('/getToken', async (req, res) => {
   }
 });
 
+app.get('/getEmoji', async (req, res) => {
+  const room = req.query.roomId;
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Content-Type', 'application/json');
+
+  const roomService = new RoomServiceClient(process.env.LIVEKIT_HOST, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
+  const encoder = new TextEncoder()
+
+  const emojis = [
+    //   😀           😐            🙁           😮           😰           😡           🤢
+    '\u{1F600}', '\u{1F610}',  '\u{1F641}', '\u{1F62E}', '\u{1F630}', '\u{1F621}', '\u{1F922}'
+  ]
+  let emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+  const strData = JSON.stringify({emoji})
+  const data = encoder.encode(strData);
+
+  await roomService.sendData(room, data, null, {topic: 'chat'});
+
+  res.status(200).json({});
+})
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

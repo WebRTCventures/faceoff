@@ -5,8 +5,9 @@ import { useState } from "react";
 import EmojiRoom from "./EmojiRoom";
 
 export default function GameRoom({token, roomId, userOptions}) {
-  const [currentWinner, setCurrentWinner] = useState('-');
   const [gameState, setGameState] = useState('waiting');
+  const [currentWinner, setCurrentWinner] = useState('-');
+  const [currentEmoji, setCurrentEmoji] = useState(null);
   const [gameData, setGameData] = useState({
     gamesPlayed: 0,
     currentWinner
@@ -22,10 +23,13 @@ export default function GameRoom({token, roomId, userOptions}) {
     // here will have the messages for the scoring too
     if(decodedMsg === 'game started') {
       setGameState('playing');
+    } else if(JSON.parse(decodedMsg)['emoji']) {
+      setCurrentEmoji(JSON.parse(decodedMsg)['emoji'])
     }
   });
 
   function startGame() {
+    fetch(`http://localhost:3002/getEmoji?roomId=${roomId}`)
     setGameState('playing');
     send(new TextEncoder().encode('game started'))
   }
@@ -42,7 +46,7 @@ export default function GameRoom({token, roomId, userOptions}) {
         ) }
 
         <div style={{ padding: '0 2rem 0 1rem' }}>
-          { gameState === 'playing' && <EmojiRoom username={userOptions.username} /> }
+          { gameState === 'playing' && <EmojiRoom username={userOptions.username} emoji={currentEmoji} /> }
           { gameState === 'waiting' && <VideoCall roomId={roomId} participants={participants} /> }
         </div>
       </div>

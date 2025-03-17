@@ -7,4 +7,12 @@ export default [
   {files: ["**/*.{js,mjs,cjs,jsx}"]},
   {languageOptions: { globals: globals.browser }},
   pluginReact.configs.flat.recommended,
+  {
+    "plugins": [
+        "react"
+     ],
+     "rules": {
+       "react/prop-types": 0
+     }
+   }
 ];

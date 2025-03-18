@@ -21,8 +21,8 @@ export default function Sidebar({gameData, rounds}) {
               Round {rounds.length - index}
             </div>
 
-            {round.map((score) => (
-              <div className='score-row'>
+            {round.map((score, index) => (
+              <div key={index} className='score-row'>
                 <img id='medal-img' src={medal} />
                 <span>{score.player}: {score.score}</span>
               </div>

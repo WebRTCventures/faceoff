@@ -9,7 +9,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
-    "livekit-client": "^2.9.5",
+    "@vladmandic/face-api": "^1.7.15",
     "livekit-client": "^2.9.8",
     "livekit-server-sdk": "^2.10.2",
     "react": "^19.0.0",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LiveKitRoom, PreJoin } from "@livekit/components-react";
 import { useSearchParams } from 'react-router';
 import GameRoom from './GameRoom';

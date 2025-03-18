@@ -71,6 +71,7 @@ app.get('/getToken', async (req, res) => {
 
 app.get('/getEmoji', async (req, res) => {
   const room = req.query.roomId;
+  const usedEmojis = req.query.usedEmojis;
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Content-Type', 'application/json');
 
@@ -81,7 +82,8 @@ app.get('/getEmoji', async (req, res) => {
     //   😀           😐            🙁           😮           😰           😡           🤢
     '\u{1F600}', '\u{1F610}',  '\u{1F641}', '\u{1F62E}', '\u{1F630}', '\u{1F621}', '\u{1F922}'
   ]
-  let emoji = emojis[Math.floor(Math.random() * emojis.length)];
+  const unusedEmojis = emojis.filter((emoji) => !usedEmojis.includes(emoji));
+  let emoji = unusedEmojis[Math.floor(Math.random() * unusedEmojis.length)];
 
   const strData = JSON.stringify({emoji})
   const data = encoder.encode(strData);

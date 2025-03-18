@@ -3,28 +3,65 @@ import { Track } from "livekit-client";
 import { useEffect, useState } from "react";
 import * as faceapi from '@vladmandic/face-api';
 
-export default function EmojiRoom({username, emoji}) {
+export default function EmojiRoom({username, emoji, endGameFn}) {
   const trackRefs = useTracks([Track.Source.Camera]);
   const myCamTrackRef = trackRefs.find((trackRef) => trackRef.participant.identity === username);
-  const emojis = [
-    //   😀           😐            🙁           😮           😰           😡           🤢
-    '\u{1F600}', '\u{1F610}',  '\u{1F641}', '\u{1F62E}', '\u{1F630}', '\u{1F621}', '\u{1F922}'
-  ]
   const [seconds, setSeconds] = useState(10);
+  const [gamePlaying, setGamePlaying] = useState(true);
+  const [modelsLoaded, setModelsLoaded] = useState(true);
+  const [isLoadingScore, setIsLoadingScore] = useState(false);
+
+  const emojiMap = {
+    '\u{1F600}': 'happy',
+    '\u{1F610}': 'neutral',
+    '\u{1F641}': 'sad',
+    '\u{1F62E}': 'surprised',
+    '\u{1F630}': 'fearful',
+    '\u{1F621}': 'angry',
+    '\u{1F922}': 'disgusted'
+  }
+
+  async function score() {
+    if(faceapi.nets.faceExpressionNet.isLoaded && faceapi.nets.ssdMobilenetv1.isLoaded && faceapi.nets.faceLandmark68Net.isLoaded) {
+      const detectionsWithExpressions = await faceapi
+        .detectAllFaces(document.getElementsByTagName('video')[0])
+        .withFaceLandmarks()
+        .withFaceExpressions()
+
+      const expressionMatch = detectionsWithExpressions[0]?.expressions[emojiMap[emoji]]
+      const score = Math.round(expressionMatch * 100)
+      const round = { player: username, score: score, emoji: emoji }
+      endGameFn(round)
+    }
+  }
 
   useEffect(() => {
-    if(emoji) {
+    if(emoji && gamePlaying && modelsLoaded) {
       if (seconds > 0) {
         setTimeout(() => setSeconds(seconds - 1), 1000);
       } else {
-        // do bot shenanigans
-        // return to waiting mode
+        setIsLoadingScore(true);
+        score();
+        setGamePlaying(false);
       }
     }
   });
 
-  // TODO record the video while on timer
-  // TODO integrate with Bot Service with tensor flow to get the scores
+  useEffect(() => {
+    if(faceapi.nets.faceExpressionNet.isLoaded && faceapi.nets.ssdMobilenetv1.isLoaded && faceapi.nets.faceLandmark68Net){
+      setModelsLoaded(true);
+    }
+  }, [faceapi.nets.faceExpressionNet.isLoaded, faceapi.nets.ssdMobilenetv1.isLoaded, faceapi.nets.faceLandmark68Net])
+
+  useEffect(() => {
+    const loadModels = async () => {
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/model');
+      await faceapi.nets.faceExpressionNet.loadFromUri('/model');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/model');
+    }
+
+    loadModels();
+  }, [])
 
   return (
     <div>
@@ -33,6 +70,7 @@ export default function EmojiRoom({username, emoji}) {
           <span className="title">Match the emoji </span>
           <span style={{fontSize: '60px', marginLeft: '2rem'}}>{emoji}</span>
         </span>
+        {isLoadingScore && <div className="title">Loading score...</div>}
         <span className="title">:{seconds}</span>
       </div>
 

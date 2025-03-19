@@ -33,7 +33,7 @@ export default function VideoCall({roomId, startGameFn}) {
                 data-tooltip-content="Copied to clickbord"
                 data-toggle='tooltip'
                 type='button'
-                class='lk-button copy-link'
+                className='lk-button copy-link'
                 onClick={() => {navigator.clipboard.writeText(`http://localhost:3000?roomId=${roomId}`)}}
               >
                 Copy link to join

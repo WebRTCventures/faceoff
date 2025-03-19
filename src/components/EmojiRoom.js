@@ -22,14 +22,13 @@ export default function EmojiRoom({username, emoji, endGameFn}) {
   }
 
   async function score() {
-    if(faceapi.nets.faceExpressionNet.isLoaded && faceapi.nets.ssdMobilenetv1.isLoaded && faceapi.nets.faceLandmark68Net.isLoaded) {
+    if(faceapi.nets.faceExpressionNet.isLoaded) {
       const detectionsWithExpressions = await faceapi
-        .detectAllFaces(document.getElementsByTagName('video')[0])
-        .withFaceLandmarks()
+        .detectSingleFace(document.getElementsByTagName('video')[0])
         .withFaceExpressions()
 
-      const expressionMatch = detectionsWithExpressions[0]?.expressions[emojiMap[emoji]]
-      const score = Math.round(expressionMatch * 100)
+      const expressionMatch = detectionsWithExpressions?.expressions[emojiMap[emoji]]
+      const score = Math.round(expressionMatch * 100) || 0
       const round = { player: username, score: score, emoji: emoji }
       endGameFn(round)
     }
@@ -48,16 +47,15 @@ export default function EmojiRoom({username, emoji, endGameFn}) {
   });
 
   useEffect(() => {
-    if(faceapi.nets.faceExpressionNet.isLoaded && faceapi.nets.ssdMobilenetv1.isLoaded && faceapi.nets.faceLandmark68Net){
+    if(faceapi.nets.faceExpressionNet.isLoaded && faceapi.nets.ssdMobilenetv1.isLoaded){
       setModelsLoaded(true);
     }
-  }, [faceapi.nets.faceExpressionNet.isLoaded, faceapi.nets.ssdMobilenetv1.isLoaded, faceapi.nets.faceLandmark68Net])
+  }, [faceapi.nets.faceExpressionNet.isLoaded, faceapi.nets.ssdMobilenetv1.isLoaded])
 
   useEffect(() => {
     const loadModels = async () => {
       await faceapi.nets.ssdMobilenetv1.loadFromUri('/model');
       await faceapi.nets.faceExpressionNet.loadFromUri('/model');
-      await faceapi.nets.faceLandmark68Net.loadFromUri('/model');
     }
 
     loadModels();

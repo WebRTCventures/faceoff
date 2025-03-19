@@ -34,14 +34,18 @@ export default function EmojiRoom({username, emoji, endGameFn}) {
     }
   }
 
+  async function loadScore() {
+    setIsLoadingScore(true);
+    await score();
+    setGamePlaying(false);
+  }
+
   useEffect(() => {
     if(emoji && gamePlaying && modelsLoaded) {
       if (seconds > 0) {
         setTimeout(() => setSeconds(seconds - 1), 1000);
       } else {
-        setIsLoadingScore(true);
-        score();
-        setGamePlaying(false);
+        loadScore();
       }
     }
   });

@@ -18,10 +18,14 @@ export default function GameRoom({token, roomId, userOptions}) {
   // Send messages to all participants via the 'chat' topic.
   const { message: latestMessage, send } = useDataChannel("chat", (msg) =>{
     const decodedMsg = new TextDecoder("utf-8").decode(msg.payload)
-    console.log("message received", decodedMsg)
 
     // here will have the messages for the scoring too
     if(decodedMsg === 'game started') {
+      setGameState('playing');
+    } else if(decodedMsg === 'game restarted') {
+      setRounds([])
+      setCurrentRound([])
+      setGameData({ gamesPlayed: 0, currentWinner: '-' })
       setGameState('playing');
     } else if(JSON.parse(decodedMsg)['emoji']) {
       setCurrentEmoji(JSON.parse(decodedMsg)['emoji'])
@@ -34,6 +38,14 @@ export default function GameRoom({token, roomId, userOptions}) {
     return array.indexOf(value) === index;
   }
 
+  function restartGame() {
+    setRounds([])
+    setCurrentRound([])
+    setGameData({ gamesPlayed: 0, currentWinner: '-' })
+    startGame()
+    send(new TextEncoder().encode('game restarted'))
+  }
+
   function startGame() {
     const usedEmojis = rounds.map((round) => round.map((score) => score.emoji)).flat().filter(onlyUnique)
     fetch(`http://localhost:3002/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
@@ -42,7 +54,7 @@ export default function GameRoom({token, roomId, userOptions}) {
   }
 
   function endGame(round) {
-    setCurrentRound([...currentRound, round])
+    setCurrentRound((values) => [...values, round])
     const strData = JSON.stringify({round})
     send(new TextEncoder().encode(strData))
   }
@@ -60,7 +72,7 @@ export default function GameRoom({token, roomId, userOptions}) {
   }
 
   function buttonLabel() {
-    if(rounds.length === 0 || rounds.length == 6) {
+    if(rounds.length === 0) {
       return 'Start a game'
     } else if(rounds.length > 0) {
       return `Start round ${rounds.length + 1}`
@@ -80,13 +92,21 @@ export default function GameRoom({token, roomId, userOptions}) {
   return (
     <>
       <div style={{width: '100%'}}>
-        { gameState === 'waiting' && (
+        { gameState === 'waiting' && rounds.length < 7 && (
           <div style={{display: 'flex', justifyContent: 'center', marginTop: '2vh', marginBottom: '2vh'}}>
-            <button id='start-game-button' type="button" disabled={participants.length <= 1 || rounds.length == 6} onClick={startGame}>
+            <button id='start-game-button' type="button" disabled={participants.length <= 1 || rounds.length == 7} onClick={startGame}>
               {buttonLabel()}
             </button>
           </div>
         ) }
+
+        { rounds.length === 7 && (
+          <div style={{display: 'flex', justifyContent: 'center', marginTop: '2vh', marginBottom: '2vh'}}>
+            <button id='start-game-button' type="button" onClick={restartGame}>
+              Restart game
+            </button>
+          </div>
+        )}
 
         <div style={{ padding: '0 2rem 0 1rem' }}>
           { gameState === 'playing' && <EmojiRoom username={userOptions.username} emoji={currentEmoji} endGameFn={endGame} /> }

@@ -42,7 +42,7 @@ export default function Home() {
           audio={userOptions.audioEnabled}
           video={userOptions.videoEnabled}
           token={token}
-          serverUrl={process.env.LIVEKIT_URL}
+          serverUrl={process.env.REACT_APP_LIVEKIT_URL}
           data-lk-theme="default"
           style={{display: 'flex', width: '100%', backgroundColor: '#F5F5FA'}}
         >

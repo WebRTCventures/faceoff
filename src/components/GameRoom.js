@@ -1,7 +1,7 @@
 import { useDataChannel, useParticipants } from "@livekit/components-react";
 import VideoCall from "./VideoCall";
 import Sidebar from "./Sidebar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmojiRoom from "./EmojiRoom";
 
 export default function GameRoom({token, roomId, userOptions}) {

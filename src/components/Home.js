@@ -35,8 +35,6 @@ export default function Home() {
     fetchToken(userOptions.username);
   }
 
-  const serverUrl = 'wss://faceoff-kglh1sok.livekit.cloud';
-
   return (
     <>
       { token ? (
@@ -44,7 +42,7 @@ export default function Home() {
           audio={userOptions.audioEnabled}
           video={userOptions.videoEnabled}
           token={token}
-          serverUrl={serverUrl}
+          serverUrl={process.env.LIVEKIT_URL}
           data-lk-theme="default"
           style={{display: 'flex', width: '100%', backgroundColor: '#F5F5FA'}}
         >
@@ -78,7 +76,7 @@ export default function Home() {
           </div>
 
           <div className="home-content">
-            <PreJoin
+          <PreJoin
               style={{width: '70%', marginTop: '50px'}}
               joinLabel="Join a Game"
               userLabel="Enter your name to continue"

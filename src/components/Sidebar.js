@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import medal from './../images/medal.png'
 
 export default function Sidebar({gameData, rounds}) {

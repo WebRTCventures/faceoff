@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ControlBar,
   RoomAudioRenderer,
@@ -8,7 +9,7 @@ import '@livekit/components-styles';
 import VideoConference from './VideoConference';
 import { Tooltip } from 'react-tooltip';
 
-export default function VideoCall({roomId, startGameFn}) {
+export default function VideoCall({roomId}) {
   const participants = useParticipants();
   return (
     <div>
@@ -42,7 +43,7 @@ export default function VideoCall({roomId, startGameFn}) {
           </>
         )}
 
-        <VideoConference roomId={roomId} />
+        <VideoConference />
       </div>
       {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
       <RoomAudioRenderer />

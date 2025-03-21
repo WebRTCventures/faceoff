@@ -1,16 +1,16 @@
+import React from 'react';
+
 import {
   GridLayout,
   ParticipantTile,
-  useParticipants,
   useTracks,
 } from '@livekit/components-react';
 
 import '@livekit/components-styles';
 import { Track } from 'livekit-client';
 
-export default function VideoConference({roomId}) {
-  // `useTracks` returns all camera and screen share tracks. If a user
-  // joins without a published camera track, a placeholder track is returned.
+export default function VideoConference() {
+  // `useTracks` returns all camera and screen share tracks. If a user joins without a published camera track, a placeholder track is returned.
   const tracks = useTracks(
     [
       { source: Track.Source.Camera, withPlaceholder: true },

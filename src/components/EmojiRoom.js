@@ -1,6 +1,6 @@
 import { ControlBar, ParticipantTile, useTracks } from "@livekit/components-react";
 import { Track } from "livekit-client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as faceapi from '@vladmandic/face-api';
 
 export default function EmojiRoom({username, emoji, endGameFn}) {

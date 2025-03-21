@@ -18,12 +18,9 @@ const createToken = async (participantName, room) => {
 }
 
 const handleToken = async (participantName, roomName) => {
-  const room = roomName || uuidv4(); // TODO: see if I can use the session ID for this.
+  const room = roomName || uuidv4();
 
-  const roomService = new RoomServiceClient(process.env.LIVEKIT_HOST, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
-  roomService.listRooms().then((rooms) => {
-    console.log('existing rooms', rooms);
-  });
+  const roomService = new RoomServiceClient(process.env.LIVEKIT_URL, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
 
   if(roomName) { // room is already created
     const participants = await roomService.listParticipants(room)
@@ -42,7 +39,7 @@ const app = express();
 const port = 3002;
 
 app.get('/rooms',  async (req, res) => {
-  const roomService = new RoomServiceClient(process.env.LIVEKIT_HOST, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
+  const roomService = new RoomServiceClient(process.env.LIVEKIT_URL, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
   const rooms = await roomService.listRooms()
 
   console.log('existing rooms', rooms);
@@ -75,7 +72,7 @@ app.get('/getEmoji', async (req, res) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Content-Type', 'application/json');
 
-  const roomService = new RoomServiceClient(process.env.LIVEKIT_HOST, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
+  const roomService = new RoomServiceClient(process.env.LIVEKIT_URL, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
   const encoder = new TextEncoder()
 
   const emojis = [

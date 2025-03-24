@@ -1,3 +1,5 @@
+// src/components/Home.js
+
 import React, { useEffect, useState } from 'react';
 import { LiveKitRoom, PreJoin } from "@livekit/components-react";
 import { useSearchParams } from 'react-router';
@@ -16,7 +18,7 @@ export default function Home() {
   }, [queryParameters])
 
   function fetchToken(username) {
-    fetch(`http://localhost:3002/getToken?userName=${username}&roomId=${roomId}`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/getToken?userName=${username}&roomId=${roomId}`)
       .then(async (res) => {
         return res.json()
       })
@@ -46,7 +48,7 @@ export default function Home() {
           data-lk-theme="default"
           style={{display: 'flex', width: '100%', backgroundColor: '#F5F5FA'}}
         >
-          <GameRoom token={token} roomId={roomId} userOptions={userOptions} />
+          <GameRoom roomId={roomId} userOptions={userOptions} />
         </LiveKitRoom>
       ) : (
         <div className="home-container">

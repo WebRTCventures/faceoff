@@ -1,10 +1,12 @@
+// src/components/GameRoom.js
+
 import { useDataChannel, useParticipants } from "@livekit/components-react";
 import VideoCall from "./VideoCall";
 import Sidebar from "./Sidebar";
 import React, { useEffect, useState } from "react";
 import EmojiRoom from "./EmojiRoom";
 
-export default function GameRoom({token, roomId, userOptions}) {
+export default function GameRoom({roomId, userOptions}) {
   const [gameState, setGameState] = useState('waiting');
   const [currentEmoji, setCurrentEmoji] = useState(null);
   const [gameData, setGameData] = useState({
@@ -19,7 +21,6 @@ export default function GameRoom({token, roomId, userOptions}) {
   const { message: latestMessage, send } = useDataChannel("chat", (msg) =>{
     const decodedMsg = new TextDecoder("utf-8").decode(msg.payload)
 
-    // here will have the messages for the scoring too
     if(decodedMsg === 'game started') {
       setGameState('playing');
     } else if(decodedMsg === 'game restarted') {
@@ -48,7 +49,7 @@ export default function GameRoom({token, roomId, userOptions}) {
 
   function startGame() {
     const usedEmojis = rounds.map((round) => round.map((score) => score.emoji)).flat().filter(onlyUnique)
-    fetch(`http://localhost:3002/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
     setGameState('playing');
     send(new TextEncoder().encode('game started'))
   }

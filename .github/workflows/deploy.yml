@@ -7,6 +7,8 @@ on:
 env:
   AWS_REGION: 'us-east-1'  # Replace with your AWS region
   FRONTEND_BUCKET: 'webrtcventures-faceoff-app-frontend'  # Match the S3 bucket name from main.tf
+  REACT_APP_SERVER_URL: 'https://faceoff-back.webrtc.ventures'
+  REACT_APP_LIVEKIT_URL: 'wss://faceoff-9m1qvtot.livekit.cloud'
 
 permissions:
   id-token: write
@@ -32,7 +34,6 @@ jobs:
         node-version: '16'
         
     - name: Build Frontend
-      working-directory: ./frontend
       run: |
         npm ci
         npm run build

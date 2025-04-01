@@ -50,12 +50,12 @@ jobs:
         
     - name: Log in to ECR
       run: |
-        aws ecr get-login-password --region ${{env.AWS_REGION}} | docker login --username AWS --password-stdin ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
+        aws ecr get-login-password --region ${{env.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
       
     - name: Build and push backend image
       run: |
-        docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest -f backend.dockerfile .
-        docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest
+        docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest -f backend.dockerfile .
+        docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest
         
     - name: Deploy to ECS
       run: |

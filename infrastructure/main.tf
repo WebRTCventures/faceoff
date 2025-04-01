@@ -461,10 +461,16 @@ resource "aws_ecs_task_definition" "task_def" {
         {
           name      = "LIVEKIT_API_SECRET"
           valueFrom = "${data.aws_secretsmanager_secret.livekit_credentials.arn}:LIVEKIT_API_SECRET::"
+        }
+      ]
+      environment = [
+        {
+          name  = "FRONTEND_URL"
+          value = "https://faceoff.webrtc.ventures"
         },
         {
-          name      = "FRONTEND_URL"
-          valueFrom = "faceoff.webrtc.ventures"
+          name  = "LIVEKIT_URL"
+          value = "wss://faceoff-9m1qvtot.livekit.cloud"
         }
       ]
       logConfiguration = {

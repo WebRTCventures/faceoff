@@ -56,7 +56,7 @@ app.get('/getToken', async (req, res) => {
 
   try {
     const { token, roomId, error } = await handleToken(userName, room)
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'http://localhost:3000');
     res.header('Content-Type', 'application/json');
 
     if(error) {
@@ -73,7 +73,7 @@ app.get('/getToken', async (req, res) => {
 app.get('/getEmoji', async (req, res) => {
   const room = req.query.roomId;
   const usedEmojis = req.query.usedEmojis;
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'http://localhost:3000');
   res.header('Content-Type', 'application/json');
 
   const roomService = new RoomServiceClient(process.env.LIVEKIT_URL, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);

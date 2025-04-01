@@ -9,6 +9,7 @@ env:
   FRONTEND_BUCKET: 'webrtcventures-faceoff-app-frontend'  # Match the S3 bucket name from main.tf
   REACT_APP_SERVER_URL: 'https://faceoff-back.webrtc.ventures'
   REACT_APP_LIVEKIT_URL: 'wss://faceoff-9m1qvtot.livekit.cloud'
+  CI: false
 
 permissions:
   id-token: write

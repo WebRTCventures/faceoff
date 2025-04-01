@@ -8,6 +8,10 @@ env:
   AWS_REGION: 'us-east-1'  # Replace with your AWS region
   FRONTEND_BUCKET: 'webrtcventures-faceoff-app-frontend'  # Match the S3 bucket name from main.tf
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

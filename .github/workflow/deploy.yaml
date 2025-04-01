@@ -1,0 +1,56 @@
+name: Deploy to ECS and S3
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AWS_REGION: 'us-east-1'  # Replace with your AWS region
+  FRONTEND_BUCKET: 'webrtcventures-faceoff-app-frontend'  # Match the S3 bucket name from main.tf
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-deploy-role
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Build Frontend
+      working-directory: ./frontend
+      run: |
+        npm ci
+        npm run build
+        
+    - name: Deploy Frontend to S3
+      run: |
+        aws s3 sync build/ s3://${{ env.FRONTEND_BUCKET }} --delete
+        
+    - name: Invalidate CloudFront
+      run: |
+        aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, '${{env.DOMAIN_NAME}}')]].Id" --output text) --paths "/*"
+        
+    - name: Log in to ECR
+      run: |
+        aws ecr get-login-password --region ${{env.AWS_REGION}} | docker login --username AWS --password-stdin ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
+      
+    - name: Build and push backend image
+      working-directory: ./backend
+      run: |
+        docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest -f backend.dockerfile .
+        docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/faceoff-back:latest
+        
+    - name: Deploy to ECS
+      run: |
+        aws ecs update-service --cluster faceoff --service faceoff-backend --force-new-deployment

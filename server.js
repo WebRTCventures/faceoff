@@ -38,6 +38,10 @@ const handleToken = async (participantName, roomName) => {
 const app = express();
 const port = 3001;
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 app.get('/rooms',  async (req, res) => {
   const roomService = new RoomServiceClient(process.env.LIVEKIT_URL, process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
   const rooms = await roomService.listRooms()

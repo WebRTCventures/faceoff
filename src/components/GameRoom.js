@@ -30,11 +30,8 @@ export default function GameRoom({roomId, userOptions}) {
       setGameData({ gamesPlayed: 0, currentWinner: '-' })
       setGameState('playing');
     } else if(JSON.parse(decodedMsg)['round']) {
-      console.log('received round', JSON.parse(decodedMsg)['round'])
-      console.log('current round', currentRound)
       setCurrentRound((currentValues) => [...currentValues, JSON.parse(decodedMsg)['round']])
     } else if(JSON.parse(decodedMsg)['emoji']) {
-      console.log('received emoji', JSON.parse(decodedMsg)['emoji'])
       setCurrentEmoji(JSON.parse(decodedMsg)['emoji'])
     }
   });

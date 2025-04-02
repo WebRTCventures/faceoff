@@ -44,20 +44,20 @@ export default function GameRoom({roomId, userOptions}) {
     setCurrentRound([])
     setGameData({ gamesPlayed: 0, currentWinner: '-' })
     startGame()
-    send(new TextEncoder().encode('game restarted'))
+    send(new TextEncoder().encode('game restarted'), {reliable: true, topic: 'chat'})
   }
 
   function startGame() {
     const usedEmojis = rounds.map((round) => round.map((score) => score.emoji)).flat().filter(onlyUnique)
     fetch(`${process.env.REACT_APP_SERVER_URL}/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
     setGameState('playing');
-    send(new TextEncoder().encode('game started'))
+    send(new TextEncoder().encode('game started'), {reliable: true, topic: 'chat'})
   }
 
   function endGame(round) {
     setCurrentRound((values) => [...values, round])
     const strData = JSON.stringify({round})
-    send(new TextEncoder().encode(strData))
+    send(new TextEncoder().encode(strData), {reliable: true, topic: 'chat'})
   }
 
   function calculateWinner() {

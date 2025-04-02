@@ -52,7 +52,7 @@ export default function GameRoom({roomId, userOptions}) {
     const usedEmojis = rounds.map((round) => round.map((score) => score.emoji)).flat().filter(onlyUnique)
     fetch(`${process.env.REACT_APP_SERVER_URL}/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
     setGameState('playing');
-    console.log('START GAME: sending data', strData)
+    console.log('START GAME')
     send(new TextEncoder().encode('game started'), {reliable: true, topic: 'chat'})
   }
 

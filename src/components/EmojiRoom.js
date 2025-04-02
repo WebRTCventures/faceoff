@@ -6,7 +6,7 @@ import * as faceapi from '@vladmandic/face-api';
 export default function EmojiRoom({username, emoji, endGameFn}) {
   const trackRefs = useTracks([Track.Source.Camera]);
   const myCamTrackRef = trackRefs.find((trackRef) => trackRef.participant.identity === username);
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(5);
   const [gamePlaying, setGamePlaying] = useState(true);
   const [modelsLoaded, setModelsLoaded] = useState(true);
   const [isLoadingScore, setIsLoadingScore] = useState(false);

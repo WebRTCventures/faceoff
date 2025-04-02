@@ -37,7 +37,7 @@ export default function VideoCall({roomId}) {
                 data-toggle='tooltip'
                 type='button'
                 className='lk-button copy-link'
-                onClick={() => {navigator.clipboard.writeText(`http://localhost:3000?roomId=${roomId}`)}}
+                onClick={() => {navigator.clipboard.writeText(`${window.location.origin}?roomId=${roomId}`)}}
               >
                 Copy link to join
               </button>

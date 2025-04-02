@@ -21,6 +21,7 @@ export default function GameRoom({roomId, userOptions}) {
   const { message: latestMessage, send } = useDataChannel("chat", (msg) =>{
     const decodedMsg = new TextDecoder("utf-8").decode(msg.payload)
 
+    console.log('received message', decodedMsg)
     if(decodedMsg === 'game started') {
       setGameState('playing');
     } else if(decodedMsg === 'game restarted') {
@@ -51,12 +52,14 @@ export default function GameRoom({roomId, userOptions}) {
     const usedEmojis = rounds.map((round) => round.map((score) => score.emoji)).flat().filter(onlyUnique)
     fetch(`${process.env.REACT_APP_SERVER_URL}/getEmoji?roomId=${roomId}&usedEmojis=${usedEmojis}`)
     setGameState('playing');
+    console.log('START GAME: sending data', strData)
     send(new TextEncoder().encode('game started'), {reliable: true, topic: 'chat'})
   }
 
   function endGame(round) {
     setCurrentRound((values) => [...values, round])
     const strData = JSON.stringify({round})
+    console.log('END GAME: sending data', strData)
     send(new TextEncoder().encode(strData), {reliable: true, topic: 'chat'})
   }
 
